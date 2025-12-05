@@ -1,5 +1,4 @@
 <?php
-// events/index.php - Events listing page
 require_once __DIR__ . '/events_common.php';
 Auth::requireLogin();
 

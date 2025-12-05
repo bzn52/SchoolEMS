@@ -1,5 +1,4 @@
 <?php
-// events/events_common.php
 // Common include for all event pages
 
 if (session_status() === PHP_SESSION_NONE) {

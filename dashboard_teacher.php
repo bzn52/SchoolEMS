@@ -1,5 +1,4 @@
 <?php
-// dashboard_teacher.php - Enhanced teacher dashboard showing all events
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {
@@ -67,6 +66,7 @@ if ($created_by_exists) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     .stats-grid {
       display: grid;
@@ -132,7 +132,7 @@ if ($created_by_exists) {
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>👨‍🏫 Teacher Dashboard</h1>
+          <h1><i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -185,7 +185,7 @@ if ($created_by_exists) {
 
         <!-- My Recent Events -->
         <?php if ($myEvents && $myEvents->num_rows > 0): ?>
-        <h3 class="section-title">📝 My Recent Events</h3>
+        <h3 class="section-title"><i class="fas fa-clipboard-list"></i> My Recent Events</h3>
         <div class="event-grid">
           <?php while ($row = $myEvents->fetch_assoc()): ?>
             <article class="card">
@@ -218,7 +218,7 @@ if ($created_by_exists) {
         <?php endif; ?>
 
         <!-- All Approved Events -->
-        <h3 class="section-title">🎉 All Upcoming Events</h3>
+        <h3 class="section-title"><i class="fas fa-calendar-check"></i> All Upcoming Events</h3>
         <?php if (!$allEvents || $allEvents->num_rows === 0): ?>
           <div class="card">
             <div class="empty-state">

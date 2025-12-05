@@ -1,5 +1,4 @@
 <?php
-// auth.php - Enhanced authentication system
 if (!defined('APP_INIT')) {
     die('Direct access not permitted');
 }

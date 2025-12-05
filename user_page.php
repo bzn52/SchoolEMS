@@ -1,6 +1,4 @@
-
 <?php
-// user_page.php - Redirect to appropriate dashboard
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 define('APP_INIT', true);

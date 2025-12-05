@@ -1,5 +1,4 @@
 <?php
-// login_register.php - Enhanced with security features
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {

@@ -1,5 +1,3 @@
-// script.js - JavaScript helper functions
-
 document.addEventListener("DOMContentLoaded", function () {
   // Auto-hide success messages after 5 seconds
   setTimeout(function () {

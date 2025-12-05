@@ -1,5 +1,5 @@
 <?php
-// config.php - Enhanced database configuration
+// Enhanced database configuration
 if (!defined('APP_INIT')) {
     define('APP_INIT', true);
 }

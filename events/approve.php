@@ -1,5 +1,4 @@
 <?php
-// events/approve.php - Approve or reject event
 require_once __DIR__ . '/events_common.php';
 
 Auth::requireLogin();

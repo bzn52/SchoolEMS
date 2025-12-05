@@ -1,5 +1,4 @@
 <?php
-// events/delete.php - Delete event
 require_once __DIR__ . '/events_common.php';
 
 Auth::requireLogin();

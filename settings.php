@@ -1,5 +1,4 @@
 <?php
-// settings.php - Enhanced account settings
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {

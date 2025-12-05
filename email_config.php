@@ -1,5 +1,4 @@
 <?php
-// email_config.php - Email configuration with local development support
 
 if (!defined('APP_INIT')) {
     die('Direct access not permitted');

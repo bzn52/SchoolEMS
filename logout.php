@@ -1,5 +1,4 @@
 <?php
-// logout.php
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 define('APP_INIT', true);

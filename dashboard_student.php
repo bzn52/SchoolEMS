@@ -1,5 +1,4 @@
 <?php
-// dashboard_student.php - Enhanced student dashboard
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once __DIR__ . '/config.php';
@@ -26,6 +25,8 @@ $role = Auth::role();
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Student Dashboard - Events</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     .event-grid {
       display: grid;
@@ -44,7 +45,7 @@ $role = Auth::role();
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>📅 Events</h1>
+          <h1><i class="fas fa-calendar-alt"></i> Events</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -56,18 +57,15 @@ $role = Auth::role();
           </div>
           <nav class="nav-links">
             <?php if ($role === 'teacher' || $role === 'admin'): ?>
-              <a href="events/create.php">➕ Create Event</a>
+              <a href="events/create.php"><i class="fas fa-plus"></i> Create Event</a>
             <?php endif; ?>
             <?php if ($role === 'admin'): ?>
-              <a href="dashboard_admin.php">🛡️ Admin Panel</a>
+              <a href="dashboard_admin.php"><i class="fas fa-shield-alt"></i> Admin Panel</a>
             <?php elseif ($role === 'teacher'): ?>
-              <a href="dashboard_teacher.php">👨‍🏫 My Events</a>
+              <a href="dashboard_teacher.php"><i class="fas fa-chalkboard-teacher"></i> My Events</a>
             <?php endif; ?>
-            <?php if (file_exists(__DIR__ . '/notification_badge.php')): ?>
-              <?php require_once __DIR__ . '/notification_badge.php'; ?>
-            <?php endif; ?>
-            <a href="settings.php">⚙️ Settings</a>
-            <a href="logout.php" style="color: var(--error);">🚪 Logout</a>
+            <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
+            <a href="logout.php" style="color: var(--error);"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </nav>
         </div>
       </div>
@@ -83,7 +81,7 @@ $role = Auth::role();
         <?php if (!$result || $result->num_rows === 0): ?>
           <div class="card">
             <div class="empty-state">
-              <div class="empty-state-icon">📭</div>
+              <div class="empty-state-icon"><i class="fas fa-inbox fa-4x"></i></div>
               <h3 class="empty-state-title">No events available</h3>
               <p class="empty-state-text">Check back later for new events!</p>
             </div>
@@ -103,7 +101,7 @@ $role = Auth::role();
                 
                 <div class="card-body">
                   <p class="text-muted text-sm mb-2">
-                    📅 <?= date('F j, Y', strtotime($row['created_at'])) ?>
+                    <i class="fas fa-calendar-alt"></i> <?= date('F j, Y', strtotime($row['created_at'])) ?>
                   </p>
                   <p><?= nl2br(e(strlen($row['description']) > 150 ? substr($row['description'], 0, 150) . '...' : $row['description'])) ?></p>
                 </div>

@@ -1,5 +1,4 @@
 <?php
-// Working login/register page
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {
@@ -257,21 +256,14 @@ function e($s) {
       const showLoginLinks = document.querySelectorAll('.show-login');
       const togglePasswordButtons = document.querySelectorAll('.toggle-password');
       
-      console.log('Login container:', loginContainer);
-      console.log('Register container:', registerContainer);
-      console.log('Show register links:', showRegisterLinks.length);
-      console.log('Show login links:', showLoginLinks.length);
-      console.log('Toggle password buttons:', togglePasswordButtons.length);
       
       // Show register form
       showRegisterLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
           e.preventDefault();
-          console.log('Switching to REGISTER form...');
           if (loginContainer && registerContainer) {
             loginContainer.classList.remove('active');
             registerContainer.classList.add('active');
-            console.log('Register form is now visible');
           }
         });
       });
@@ -280,11 +272,9 @@ function e($s) {
       showLoginLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
           e.preventDefault();
-          console.log('🔄 Switching to LOGIN form...');
           if (loginContainer && registerContainer) {
             registerContainer.classList.remove('active');
             loginContainer.classList.add('active');
-            console.log('✅ Login form is now visible');
           }
         });
       });

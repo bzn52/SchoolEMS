@@ -1,6 +1,5 @@
-
 <?php
-// admin_page.php - Redirect to admin dashboard
+// Redirect to admin dashboard
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 define('APP_INIT', true);

@@ -1,5 +1,4 @@
 <?php
-// dashboard_admin.php - Enhanced admin dashboard
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 define('APP_INIT', true);
@@ -36,6 +35,7 @@ $role = Auth::role();
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin Dashboard - Events Management</title>
   <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     .stats-grid {
       display: grid;
@@ -96,7 +96,7 @@ $role = Auth::role();
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>🛡️ Admin Dashboard</h1>
+          <h1><i class="fas fa-shield-alt"></i> Admin Dashboard</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -107,13 +107,10 @@ $role = Auth::role();
             </div>
           </div>
           <nav class="nav-links">
-            <a href="events/create.php">➕ Create Event</a>
-            <a href="dashboard_student.php">👁️ Student View</a>
-            <?php if (file_exists(__DIR__ . '/notification_badge.php')): ?>
-              <?php require_once __DIR__ . '/notification_badge.php'; ?>
-            <?php endif; ?>
-            <a href="settings.php">⚙️ Settings</a>
-            <a href="logout.php" style="color: var(--error);">🚪 Logout</a>
+            <a href="events/create.php"><i class="fas fa-plus"></i> Create Event</a>
+            <a href="dashboard_student.php"><i class="fas fa-eye"></i> Student View</a>
+            <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
+            <a href="logout.php" style="color: var(--error);"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </nav>
         </div>
       </div>
@@ -130,23 +127,23 @@ $role = Auth::role();
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-number"><?= $stats['total'] ?></div>
-            <div class="stat-label">📊 Total Events</div>
+            <div class="stat-label"><i class="fas fa-chart-bar"></i> Total Events</div>
           </div>
           <div class="stat-card pending">
             <div class="stat-number"><?= $stats['pending'] ?></div>
-            <div class="stat-label">⏳ Pending Review</div>
+            <div class="stat-label"><i class="fas fa-hourglass-half"></i> Pending Review</div>
           </div>
           <div class="stat-card approved">
             <div class="stat-number"><?= $stats['approved'] ?></div>
-            <div class="stat-label">✅ Approved</div>
+            <div class="stat-label"><i class="fas fa-check-circle"></i> Approved</div>
           </div>
           <div class="stat-card rejected">
             <div class="stat-number"><?= $stats['rejected'] ?></div>
-            <div class="stat-label">❌ Rejected</div>
+            <div class="stat-label"><i class="fas fa-times-circle"></i> Rejected</div>
           </div>
           <div class="stat-card users">
             <div class="stat-number"><?= $stats['users'] ?></div>
-            <div class="stat-label">👥 Total Users</div>
+            <div class="stat-label"><i class="fas fa-users"></i> Total Users</div>
           </div>
         </div>
 
@@ -155,13 +152,13 @@ $role = Auth::role();
           <div class="card-header">
             <h3 class="card-title">All Events</h3>
             <div style="display: flex; gap: 0.5rem;">
-              <a href="events/create.php" class="btn btn-sm">➕ New Event</a>
+              <a href="events/create.php" class="btn btn-sm"><i class="fas fa-plus"></i> New Event</a>
             </div>
           </div>
           
           <?php if (!$result || $result->num_rows === 0): ?>
             <div class="empty-state">
-              <div class="empty-state-icon">📭</div>
+              <div class="empty-state-icon"><i class="fas fa-inbox fa-4x"></i></div>
               <h3 class="empty-state-title">No events found</h3>
               <p class="empty-state-text">Events will appear here once created</p>
               <a href="events/create.php" class="btn btn-sm" style="margin-top: 1rem; width: auto; display: inline-block;">Create First Event</a>
@@ -184,7 +181,7 @@ $role = Auth::role();
                     <td>
                       <strong><?= e($row['title']) ?></strong>
                       <?php if ($row['image']): ?>
-                        <br><small class="text-muted">📷 Has image</small>
+                        <br><small class="text-muted"><i class="fa-solid fa-camera"></i> Has image</small>
                       <?php endif; ?>
                     </td>
                     <td><?= e($row['creator_name'] ?? 'Unknown') ?></td>
@@ -196,15 +193,15 @@ $role = Auth::role();
                     </td>
                     <td style="text-align: center;">
                       <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                        <a href="events/view.php?id=<?= (int)$row['id'] ?>" class="action-btn" style="background: #e0e7ff; color: #4338ca;">👁️ View</a>
-                        <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="action-btn" style="background: #dbeafe; color: #1e40af;">✏️ Edit</a>
+                        <a href="events/view.php?id=<?= (int)$row['id'] ?>" class="action-btn" style="background: #e0e7ff; color: #4338ca;"><i class="fas fa-eye"></i> View</a>
+                        <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="action-btn" style="background: #dbeafe; color: #1e40af;"><i class="fas fa-edit"></i> Edit</a>
                         <?php if ($row['status'] !== 'approved'): ?>
-                          <a href="events/approve.php?id=<?= (int)$row['id'] ?>&action=approve" class="action-btn" style="background: #d1fae5; color: #065f46;">✓ Approve</a>
+                          <a href="events/approve.php?id=<?= (int)$row['id'] ?>&action=approve" class="action-btn" style="background: #d1fae5; color: #065f46;"><i class="fa-solid fa-check"></i> Approve</a>
                         <?php endif; ?>
                         <?php if ($row['status'] !== 'rejected'): ?>
-                          <a href="events/approve.php?id=<?= (int)$row['id'] ?>&action=reject" class="action-btn" style="background: #fef3c7; color: #92400e;">✗ Reject</a>
+                          <a href="events/approve.php?id=<?= (int)$row['id'] ?>&action=reject" class="action-btn" style="background: #fef3c7; color: #92400e;"><i class="fa-solid fa-x"></i> Reject</a>
                         <?php endif; ?>
-                        <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="action-btn" style="background: #fee2e2; color: #991b1b;" onclick="return confirm('Delete this event?')">🗑️ Delete</a>
+                        <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="action-btn" style="background: #fee2e2; color: #991b1b;" onclick="return confirm('Delete this event?')"><i class="fas fa-trash-alt"></i> Delete</a>
                       </div>
                     </td>
                   </tr>

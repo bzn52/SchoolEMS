@@ -1,5 +1,5 @@
 <?php
-// events/view.php - View single event
+// View single event
 require_once __DIR__ . '/events_common.php';
 Auth::requireLogin();
 

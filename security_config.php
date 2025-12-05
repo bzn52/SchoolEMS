@@ -1,6 +1,4 @@
 <?php
-// security_config.php - Enhanced security settings
-
 // Prevent direct access
 if (!defined('APP_INIT')) {
     http_response_code(403);
