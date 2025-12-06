@@ -1,5 +1,4 @@
 <?php
-// dashboard_teacher.php - UPDATED: Shows edit/delete only for own events
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {
@@ -135,7 +134,7 @@ if ($created_by_exists) {
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>👨‍🏫 Teacher Dashboard</h1>
+          <h1><i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -146,12 +145,12 @@ if ($created_by_exists) {
             </div>
           </div>
           <nav class="nav-links">
-            <a href="events/create.php">➕ Create Event</a>
+            <a href="events/create.php"><i class="fas fa-plus"></i> Create Event</a>
             <?php if ($role === 'admin'): ?>
-              <a href="dashboard_admin.php">🛡️ Admin Panel</a>
+              <a href="dashboard_admin.php"><i class="fas fa-shield-alt"></i> Admin Panel</a>
             <?php endif; ?>
-            <a href="settings.php">⚙️ Settings</a>
-            <a href="logout.php" style="color: var(--error);">🚪 Logout</a>
+            <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
+            <a href="logout.php" style="color: var(--error);"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </nav>
         </div>
       </div>
@@ -175,26 +174,26 @@ if ($created_by_exists) {
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-number"><?= $stats['total'] ?></div>
-            <div class="stat-label">📊 My Total Events</div>
+            <div class="stat-label"><i class="fas fa-chart-bar"></i> My Total Events</div>
           </div>
           <div class="stat-card pending">
             <div class="stat-number"><?= $stats['pending'] ?></div>
-            <div class="stat-label">⏳ My Pending</div>
+            <div class="stat-label"><i class="fas fa-hourglass-half"></i> My Pending</div>
           </div>
           <div class="stat-card approved">
             <div class="stat-number"><?= $stats['approved'] ?></div>
-            <div class="stat-label">✅ My Approved</div>
+            <div class="stat-label"><i class="fas fa-check-circle"></i> My Approved</div>
           </div>
           <div class="stat-card rejected">
             <div class="stat-number"><?= $stats['rejected'] ?></div>
-            <div class="stat-label">❌ My Rejected</div>
+            <div class="stat-label"><i class="fas fa-times-circle"></i> My Rejected</div>
           </div>
         </div>
         <?php endif; ?>
 
         <!-- My Recent Events -->
         <?php if ($myEvents && $myEvents->num_rows > 0): ?>
-        <h3 class="section-title">📝 My Recent Events</h3>
+        <h3 class="section-title"><i class="fas fa-clipboard-list"></i> My Recent Events</h3>
         <div class="event-grid">
           <?php while ($row = $myEvents->fetch_assoc()): ?>
             <article class="card">
@@ -211,15 +210,15 @@ if ($created_by_exists) {
               
               <div class="card-body">
                 <p class="text-muted text-sm mb-2">
-                  📅 <?= date('F j, Y', strtotime($row['created_at'])) ?>
+                  <i class="fas fa-calendar-alt"></i> <?= date('F j, Y', strtotime($row['created_at'])) ?>
                 </p>
                 <p><?= nl2br(e(strlen($row['description']) > 150 ? substr($row['description'], 0, 150) . '...' : $row['description'])) ?></p>
               </div>
               
               <div class="card-footer">
-                <a href="events/view.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-outline">👁️ View</a>
-                <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm">✏️ Edit</a>
-                <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this event?')">🗑️ Delete</a>
+                <a href="events/view.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-outline"><i class="fas fa-eye"></i> View</a>
+                <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this event?')"><i class="fas fa-trash-alt"></i> Delete</a>
               </div>
             </article>
           <?php endwhile; ?>
@@ -227,11 +226,11 @@ if ($created_by_exists) {
         <?php endif; ?>
 
         <!-- All Approved Events -->
-        <h3 class="section-title">🎉 All Upcoming Events</h3>
+        <h3 class="section-title"><i class="fas fa-calendar-check"></i> All Upcoming Events</h3>
         <?php if (!$allEvents || $allEvents->num_rows === 0): ?>
           <div class="card">
             <div class="empty-state">
-              <div class="empty-state-icon">📭</div>
+              <div class="empty-state-icon"><i class="fas fa-inbox fa-4x"></i></div>
               <h3 class="empty-state-title">No events available</h3>
               <p class="empty-state-text">Check back later for new events or create one!</p>
               <a href="events/create.php" class="btn btn-sm" style="margin-top: 1rem; width: auto; display: inline-block;">Create Event</a>
@@ -251,7 +250,7 @@ if ($created_by_exists) {
                   <h3 class="card-title">
                     <?= e($row['title']) ?>
                     <?php if ($isOwner): ?>
-                      <span class="owner-badge">👤 Mine</span>
+                      <span class="owner-badge"><i class="fa-solid fa-user"></i> Mine</span>
                     <?php endif; ?>
                   </h3>
                   <span class="badge badge-approved">Approved</span>
@@ -259,9 +258,9 @@ if ($created_by_exists) {
                 
                 <div class="card-body">
                   <p class="text-muted text-sm mb-2">
-                    📅 <?= date('F j, Y', strtotime($row['created_at'])) ?>
+                    <i class="fas fa-calendar-alt"></i> <?= date('F j, Y', strtotime($row['created_at'])) ?>
                     <?php if (!empty($row['creator_name'])): ?>
-                      <br>👤 By <?= e($row['creator_name']) ?>
+                      <br><i class="fa-solid fa-user"></i> By <?= e($row['creator_name']) ?>
                     <?php endif; ?>
                   </p>
                   <p><?= nl2br(e(strlen($row['description']) > 150 ? substr($row['description'], 0, 150) . '...' : $row['description'])) ?></p>
@@ -271,8 +270,8 @@ if ($created_by_exists) {
                   <a href="events/view.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm" style="width: 100%;">View Details →</a>
                   <?php if ($isOwner): ?>
                     <!-- Only show edit/delete for own events -->
-                    <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-outline">✏️ Edit</a>
-                    <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this event?')">🗑️ Delete</a>
+                    <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-outline"><i class="fas fa-edit"></i> Edit</a>
+                    <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this event?')"><i class="fas fa-trash-alt"></i> Delete</a>
                   <?php endif; ?>
                 </div>
               </article>

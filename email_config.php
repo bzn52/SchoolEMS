@@ -217,7 +217,7 @@ HTML;
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome! 🎉</h1>
+            <h1>Welcome!</h1>
         </div>
         <div class="content">
             <p>Hi {$name},</p>
@@ -233,10 +233,6 @@ HTML;
 </html>
 HTML;
     }
-    
-    /**
-     * Generic notification template
-     */
     private static function getNotificationTemplate(string $title, string $message): string {
         return <<<HTML
 <!DOCTYPE html>

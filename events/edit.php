@@ -40,6 +40,7 @@ if ($role === 'teacher') {
             <meta charset="utf-8">
             <title>Access Denied</title>
             <link rel="stylesheet" href="../styles.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </head>
         <body>
             <div class="page-wrapper">
@@ -47,7 +48,7 @@ if ($role === 'teacher') {
                     <div class="container container-sm">
                         <div class="card">
                             <div class="empty-state">
-                                <div class="empty-state-icon">🚫</div>
+                                <div class="empty-state-icon"><i class="fas fa-ban fa-4x"></i></div>
                                 <h2 class="empty-state-title">Access Denied</h2>
                                 <p class="empty-state-text">You can only edit events that you created.</p>
                                 <a href="../dashboard_teacher.php" class="btn btn-sm" style="margin-top: 1rem; width: auto; display: inline-block;">Go to Dashboard</a>
@@ -75,7 +76,6 @@ $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-    // CSRF validation
     if (!CSRF::validateToken($_POST['csrf_token'] ?? '')) {
         $errors[] = 'Security validation failed. Please try again.';
     } else {
@@ -126,12 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->execute()) {
                 $stmt->close();
                 
-                // Notify if status changed
-                if ($oldStatus !== $newStatus && file_exists(__DIR__ . '/../notifications.php')) {
-                    require_once __DIR__ . '/../notifications.php';
-                    Notification::notifyEventStatusChange($eventId, $oldStatus, $newStatus);
-                }
-                
                 header('Location: ' . ($role === 'admin' ? '../dashboard_admin.php' : '../dashboard_teacher.php'));
                 exit;
             } else {
@@ -151,13 +145,14 @@ function e($s) { return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Edit Event</title>
   <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <div class="page-wrapper">
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>✏️ Edit Event</h1>
+          <h1><i class="fas fa-edit"></i> Edit Event</h1>
         </div>
         <div class="header-right">
           <div class="user-info">

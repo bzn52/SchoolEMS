@@ -1,4 +1,5 @@
 <?php
+// login_register.php - UPDATED with teacher approval system
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {
@@ -94,41 +95,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
         exit;
     }
     
-    // Create user
+    // Create user with approval logic
     $hash = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, created_at) VALUES (?, ?, ?, ?, NOW())");
-    $stmt->bind_param('ssss', $name, $email, $hash, $role);
+    
+    // NEW: Students are auto-approved, Teachers need admin approval
+    $approved = ($role === 'student') ? 1 : 0;
+    
+    $stmt = $conn->prepare("INSERT INTO users (name, email, password, role, approved, created_at) 
+                           VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param('ssssi', $name, $email, $hash, $role, $approved);
     
     if ($stmt->execute()) {
         $userId = $stmt->insert_id;
         RateLimit::reset('register');
         
-        // Try to send welcome email (don't fail registration if email fails)
-        try {
-            if (file_exists(__DIR__ . '/email_config.php')) {
-                require_once __DIR__ . '/email_config.php';
-                @Mailer::sendWelcome($email, $name, $role);
-            }
-        } catch (Exception $e) {
-            error_log("Failed to send welcome email: " . $e->getMessage());
-        }
-        
-        // Create welcome notification
-        try {
+        // Send appropriate success message
+        if ($role === 'teacher') {
+            $_SESSION['register_success'] = 'Registration successful! Your account is pending admin approval. You will be notified once approved.';
+            
+            // Notify all admins about new teacher registration
             if (file_exists(__DIR__ . '/notifications.php')) {
                 require_once __DIR__ . '/notifications.php';
-                Notification::create(
-                    $userId,
-                    'Welcome to Event Management System! 🎉',
-                    'Your account has been created successfully. You can now start exploring events.',
-                    'success'
-                );
+                $adminResult = $conn->query("SELECT id FROM users WHERE role = 'admin'");
+                while ($admin = $adminResult->fetch_assoc()) {
+                    Notification::create(
+                        (int)$admin['id'],
+                        'New Teacher Registration',
+                        "A new teacher '{$name}' ({$email}) has registered and is pending approval.",
+                        'info'
+                    );
+                }
             }
-        } catch (Exception $e) {
-            error_log("Failed to create notification: " . $e->getMessage());
+        } else {
+            $_SESSION['register_success'] = 'Registration successful! Please login.';
+            
+            // Send welcome email for students
+            try {
+                if (file_exists(__DIR__ . '/email_config.php')) {
+                    require_once __DIR__ . '/email_config.php';
+                    @Mailer::sendWelcome($email, $name, $role);
+                }
+            } catch (Exception $e) {
+                error_log("Failed to send welcome email: " . $e->getMessage());
+            }
         }
         
-        $_SESSION['register_success'] = 'Registration successful! Please login.';
         $_SESSION['active_form'] = 'login';
         $_SESSION['login_email'] = $email;
         $stmt->close();
@@ -176,8 +187,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         exit;
     }
     
-    // Fetch user
-    $stmt = $conn->prepare("SELECT id, name, email, password, role FROM users WHERE email = ?");
+    // Fetch user (include approved status)
+    $stmt = $conn->prepare("SELECT id, name, email, password, role, approved FROM users WHERE email = ?");
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -187,6 +198,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     // Verify credentials
     if (!$user || !Auth::verifyPassword($user, $password)) {
         $_SESSION['login_error'] = 'Invalid email or password.';
+        $_SESSION['active_form'] = 'login';
+        $_SESSION['login_email'] = $email;
+        header('Location: index.php');
+        exit;
+    }
+    
+    // NEW: Check if account is approved (for teachers)
+    if ($user['role'] === 'teacher' && $user['approved'] != 1) {
+        $_SESSION['login_error'] = 'Your account is pending admin approval. Please wait for approval notification.';
         $_SESSION['active_form'] = 'login';
         $_SESSION['login_email'] = $email;
         header('Location: index.php');

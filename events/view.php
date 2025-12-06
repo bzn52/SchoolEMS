@@ -35,13 +35,14 @@ if ($role === 'student' && ($event[EVENTS_STATUS_COL] ?? '') !== 'approved') {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title><?= e($event['title']) ?> - Event Details</title>
   <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <div class="page-wrapper">
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>📄 Event Details</h1>
+          <h1><i class="fas fa-calendar-alt"></i> Event Details</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -76,7 +77,7 @@ if ($role === 'student' && ($event[EVENTS_STATUS_COL] ?? '') !== 'approved') {
           
           <div class="card-body">
             <p class="text-muted text-sm mb-2">
-              📅 Posted on <?= date('F j, Y \a\t g:i A', strtotime($event['created_at'])) ?>
+              <i class="fas fa-calendar-alt"></i> Posted on <?= date('F j, Y \a\t g:i A', strtotime($event['created_at'])) ?>
             </p>
             
             <div style="margin-top: 1.5rem; line-height: 1.8;">

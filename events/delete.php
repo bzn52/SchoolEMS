@@ -39,6 +39,7 @@ if ($role === 'teacher') {
             <meta charset="utf-8">
             <title>Access Denied</title>
             <link rel="stylesheet" href="../styles.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         </head>
         <body>
             <div class="page-wrapper">
@@ -46,7 +47,7 @@ if ($role === 'teacher') {
                     <div class="container container-sm">
                         <div class="card">
                             <div class="empty-state">
-                                <div class="empty-state-icon">🚫</div>
+                                <div class="empty-state-icon"><i class="fas fa-ban fa-4x"></i></div>
                                 <h2 class="empty-state-title">Access Denied</h2>
                                 <p class="empty-state-text">You can only delete events that you created.</p>
                                 <a href="../dashboard_teacher.php" class="btn btn-sm" style="margin-top: 1rem; width: auto; display: inline-block;">Go to Dashboard</a>

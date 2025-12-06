@@ -108,7 +108,7 @@ $backLink = ($role === "admin") ? "../dashboard_admin.php" : "../dashboard_teach
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>➕ Create Event</h1>
+          <h1><i class="fas fa-plus"></i> Create Event</h1>
         </div>
         <div class="header-right">
           <div class="user-info">

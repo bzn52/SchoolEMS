@@ -110,13 +110,14 @@ $role = Auth::role();
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Account Settings - Event Management</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <div class="page-wrapper">
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>⚙️ Account Settings</h1>
+          <h1><i class="fas fa-cog"></i> Account Settings</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -128,8 +129,8 @@ $role = Auth::role();
           </div>
           <nav class="nav-links">
             <a href="<?= Auth::getDashboardUrl() ?>">Dashboard</a>
-            <a href="settings.php">⚙️ Settings</a>
-            <a href="logout.php" style="color: var(--error);">🚪 Logout</a>
+            <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
+            <a href="logout.php" style="color: var(--error);"><i class="fas fa-sign-out-alt"></i> Logout</a>
           </nav>
         </div>
       </div>
@@ -192,7 +193,7 @@ $role = Auth::role();
                 <label class="form-label">Current Password</label>
                 <div class="password-toggle">
                   <input type="password" name="current_password" id="current_password" required>
-                  <button type="button" class="toggle-password" data-target="current_password" tabindex="-1">👁️</button>
+                  <button type="button" class="toggle-password" data-target="current_password" tabindex="-1"><i class="fas fa-eye"></i></button>
                 </div>
               </div>
 
@@ -200,7 +201,7 @@ $role = Auth::role();
                 <label class="form-label">New Password</label>
                 <div class="password-toggle">
                   <input type="password" name="new_password" id="new_password" required minlength="8">
-                  <button type="button" class="toggle-password" data-target="new_password" tabindex="-1">👁️</button>
+                  <button type="button" class="toggle-password" data-target="new_password" tabindex="-1"><i class="fas fa-eye"></i></button>
                 </div>
               </div>
 
@@ -218,7 +219,7 @@ $role = Auth::role();
                 <label class="form-label">Confirm New Password</label>
                 <div class="password-toggle">
                   <input type="password" name="confirm_password" id="confirm_password" required>
-                  <button type="button" class="toggle-password" data-target="confirm_password" tabindex="-1">👁️</button>
+                  <button type="button" class="toggle-password" data-target="confirm_password" tabindex="-1"><i class="fas fa-eye"></i></button>
                 </div>
               </div>
 

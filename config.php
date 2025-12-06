@@ -1,10 +1,9 @@
 <?php
-// Enhanced database configuration
 if (!defined('APP_INIT')) {
     define('APP_INIT', true);
 }
 
-// Error handling (development vs production)
+// Error handling
 $isDevelopment = ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_ADDR'] === '127.0.0.1');
 
 if ($isDevelopment) {
@@ -17,8 +16,8 @@ if ($isDevelopment) {
     ini_set('error_log', __DIR__ . '/logs/error.log');
 }
 
-// Database configuration (consider using .env file in production)
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1:3306'); // Change 3306 to 3307 if MySQL uses different port
+// Database configuration
+define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1:3306');
 define('DB_USER', getenv('DB_USER') ?: 'root');
 define('DB_PASS', getenv('DB_PASS') ?: '');
 define('DB_NAME', getenv('DB_NAME') ?: 'users_db');
@@ -82,5 +81,4 @@ register_shutdown_function(function() {
 // Timezone
 date_default_timezone_set('UTC');
 
-// Include security config AFTER defining APP_INIT but BEFORE session_start()
 require_once __DIR__ . '/security_config.php';

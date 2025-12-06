@@ -8,7 +8,6 @@ Auth::requireLogin();
 
 function e($s){ return htmlspecialchars((string)$s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 
-// Students see only approved events
 $sql = "SELECT id, title, description, image, created_at FROM events WHERE status = ? ORDER BY created_at DESC";
 $stmt = $conn->prepare($sql);
 $approved = 'approved';

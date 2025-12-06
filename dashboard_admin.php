@@ -108,6 +108,7 @@ $role = Auth::role();
           </div>
           <nav class="nav-links">
             <a href="events/create.php"><i class="fas fa-plus"></i> Create Event</a>
+            <a href="admin_approve_teachers.php"><i class="fas fa-clipboard-list"></i> Approve Teachers</a>
             <a href="dashboard_student.php"><i class="fas fa-eye"></i> Student View</a>
             <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
             <a href="logout.php" style="color: var(--error);"><i class="fas fa-sign-out-alt"></i> Logout</a>

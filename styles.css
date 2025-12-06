@@ -303,6 +303,7 @@ header {
   font-size: 0.875rem;
 }
 
+/* Form input */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -310,7 +311,7 @@ input[type="file"],
 textarea,
 select {
   width: 100%;
-  padding: var(--space-3) var(--space-4);
+  padding: 0.875rem 1rem;
   font-size: 1rem;
   border: 2px solid var(--border-medium);
   border-radius: var(--radius);
@@ -319,6 +320,9 @@ select {
   outline: none;
   transition: var(--transition);
   font-family: inherit;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  display: block;
 }
 
 input:focus,
@@ -338,45 +342,87 @@ textarea {
   min-height: 120px;
 }
 
+/* Password toggle button */
 .password-toggle {
   position: relative;
+  margin-bottom: 1.5rem;
 }
 
 .password-toggle input {
   padding-right: 3rem;
+  margin-bottom: 0;
 }
 
-.password-toggle button {
+.password-toggle button,
+.password-toggle .toggle-password {
   position: absolute;
-  right: var(--space-3);
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   background: none !important;
   border: none !important;
   cursor: pointer;
-  padding: var(--space-2) !important;
+  padding: 0.5rem !important;
   color: var(--text-muted);
   font-size: 1.25rem;
   width: auto !important;
+  height: auto !important;
   margin: 0 !important;
   transition: var(--transition);
   box-shadow: none !important;
+  line-height: 1;
 }
 
-.password-toggle button:hover {
+.password-toggle button:hover,
+.password-toggle .toggle-password:hover {
   color: var(--primary);
   background: none !important;
+  transform: translateY(-50%);
 }
 
-.password-toggle button::before {
+.password-toggle button::before,
+.password-toggle .toggle-password::before {
   display: none !important;
+}
+
+.form-box p {
+  text-align: center;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-4);
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.form-box p:last-child {
+  margin-bottom: 0;
+}
+
+.form-box .message,
+.form-box .error-message,
+.form-box .success-message,
+.form-box .info-message {
+  margin-bottom: var(--space-6);
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  padding: 1rem 1.25rem;
+  font-size: 0.9375rem;
+}
+
+.container .message,
+.container .error-message,
+.container .success-message,
+.container .info-message {
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Buttons */
 .btn,
 button[type="submit"] {
   width: 100%;
-  padding: var(--space-3) var(--space-6);
+  padding: 0.875rem 1.5rem;
   background: var(--primary);
   color: var(--bg-primary);
   border: none;
@@ -390,6 +436,9 @@ button[type="submit"] {
   text-align: center;
   font-family: inherit;
   box-shadow: var(--shadow-sm);
+  margin-top: var(--space-4);
+  margin-bottom: 0;
+  line-height: 1.5;
 }
 
 .btn:hover,
@@ -454,7 +503,7 @@ button[type="submit"]:active {
   background: #d97706;
 }
 
-/* Badges */
+/* Badge */
 .badge {
   display: inline-block;
   padding: var(--space-1) var(--space-3);
@@ -501,7 +550,7 @@ button[type="submit"]:active {
   border: 1px solid #f9a8d4;
 }
 
-/* Messages */
+/* Message */
 .message {
   padding: var(--space-4) var(--space-5);
   border-radius: var(--radius-lg);
@@ -555,7 +604,7 @@ button[type="submit"]:active {
   content: "⚠️";
 }
 
-/* Tables */
+/* Table */
 .table-container {
   overflow-x: auto;
   margin: var(--space-6) 0;
@@ -605,7 +654,7 @@ tbody tr:hover {
   background: var(--bg-secondary);
 }
 
-/* ==================== EMPTY STATE ==================== */
+/* Empty state */
 .empty-state {
   text-align: center;
   padding: var(--space-12) var(--space-8);
@@ -629,7 +678,7 @@ tbody tr:hover {
   font-size: 1rem;
 }
 
-/* ==================== PAGE HEADERS ==================== */
+/* Page Header */
 .page-header {
   text-align: center;
   margin-bottom: var(--space-10);
@@ -649,7 +698,7 @@ tbody tr:hover {
   font-weight: 400;
 }
 
-/* ==================== STATISTICS CARDS ==================== */
+/* Stats cards */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -704,14 +753,14 @@ tbody tr:hover {
   font-weight: 600;
 }
 
-/* ==================== EVENT GRID ==================== */
+/* Event grid */
 .event-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--space-6);
 }
 
-/* ==================== UTILITY CLASSES ==================== */
+/* Utility */
 .text-center {
   text-align: center;
 }
@@ -756,7 +805,7 @@ tbody tr:hover {
   margin-top: var(--space-6);
 }
 
-/* ==================== LOADING SPINNER ==================== */
+/* Loading spinner */
 .spinner {
   border: 3px solid var(--border-light);
   border-top: 3px solid var(--primary);
@@ -776,7 +825,7 @@ tbody tr:hover {
   }
 }
 
-/* ==================== PASSWORD REQUIREMENTS ==================== */
+/* Password Requirement */
 .password-requirements {
   font-size: 0.875rem;
   color: var(--text-secondary);
@@ -813,7 +862,7 @@ tbody tr:hover {
   font-weight: 700;
 }
 
-/* ==================== LINKS ==================== */
+/* Links */
 .toggle-link {
   color: var(--primary);
   font-weight: 600;
@@ -826,10 +875,7 @@ tbody tr:hover {
   text-decoration: underline;
 }
 
-/* ==================== RESPONSIVE DESIGN - REMOVED ==================== */
-/* Responsiveness has been removed as requested */
-
-/* ==================== PRINT STYLES ==================== */
+/* Print style */
 @media print {
   .nav-links,
   .btn,
@@ -846,7 +892,7 @@ tbody tr:hover {
   }
 }
 
-/* ==================== ACCESSIBILITY ==================== */
+/* Accessibility */
 *:focus-visible {
   outline: 2px solid var(--primary);
   outline-offset: 2px;
@@ -862,7 +908,7 @@ tbody tr:hover {
   }
 }
 
-/* ==================== SCROLLBAR ==================== */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -880,7 +926,7 @@ tbody tr:hover {
   background: var(--primary);
 }
 
-/* ==================== SELECTION ==================== */
+/* Selection */
 ::selection {
   background: rgba(37, 99, 235, 0.2);
   color: var(--text-primary);
@@ -889,4 +935,81 @@ tbody tr:hover {
 ::-moz-selection {
   background: rgba(37, 99, 235, 0.2);
   color: var(--text-primary);
+}
+
+/* Font Awesome Icons */
+.fas,
+.far,
+.fab {
+  margin-right: 0.5rem;
+}
+
+/* Icon in buttons */
+.btn .fas,
+.btn .far,
+button .fas,
+button .far {
+  margin-right: 0.5rem;
+}
+
+/* Icon only buttons (no text) */
+.btn .fas:only-child,
+.btn .far:only-child {
+  margin-right: 0;
+}
+
+/* Large icons in empty states */
+.empty-state-icon .fas,
+.empty-state-icon .far {
+  margin-right: 0;
+  color: var(--primary-light);
+  opacity: 0.6;
+}
+
+/* Icons in stat cards */
+.stat-label .fas,
+.stat-label .far {
+  margin-right: 0.25rem;
+}
+
+/* Icons in navigation */
+.nav-links a .fas,
+.nav-links a .far {
+  margin-right: 0.25rem;
+}
+
+/* Icons in messages */
+.message .fas,
+.message .far {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Notification bell animation */
+.notification-bell .fas {
+  margin-right: 0;
+}
+
+.notification-bell:hover .fas {
+  animation: bellRing 0.5s ease;
+}
+
+@keyframes bellRing {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: rotate(-10deg);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: rotate(10deg);
+  }
 }

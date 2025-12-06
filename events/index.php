@@ -24,13 +24,14 @@ if ($role === 'student') {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Events List</title>
   <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <div class="page-wrapper">
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1>📅 Events</h1>
+          <h1><i class="fas fa-calendar-alt"></i> Events</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -42,7 +43,7 @@ if ($role === 'student') {
           </div>
           <nav class="nav-links">
             <?php if ($role === 'teacher' || $role === 'admin'): ?>
-              <a href="create.php">➕ Create Event</a>
+              <a href="create.php"><i class="fas fa-plus"></i> Create Event</a>
             <?php endif; ?>
             <a href="../<?= Auth::getDashboardUrl() ?>">Dashboard</a>
             <a href="../logout.php">Logout</a>
@@ -56,7 +57,7 @@ if ($role === 'student') {
         <?php if (!$res || $res->num_rows === 0): ?>
           <div class="card">
             <div class="empty-state">
-              <div class="empty-state-icon">📭</div>
+              <div class="empty-state-icon"><i class="fas fa-inbox fa-4x"></i></div>
               <h3 class="empty-state-title">No events found</h3>
               <p class="empty-state-text">Check back later for new events!</p>
             </div>
@@ -80,7 +81,7 @@ if ($role === 'student') {
                 
                 <div class="card-body">
                   <p class="text-muted text-sm mb-2">
-                    📅 <?= date('F j, Y', strtotime($row['created_at'])) ?>
+                    <i class="fas fa-calendar-alt"></i> <?= date('F j, Y', strtotime($row['created_at'])) ?>
                   </p>
                   <p><?= nl2br(e(strlen($row['description']) > 300 ? substr($row['description'], 0, 300) . '...' : $row['description'])) ?></p>
                 </div>

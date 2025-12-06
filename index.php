@@ -1,4 +1,5 @@
 <?php
+// Working login/register page with FIXED message styling
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {
@@ -51,7 +52,7 @@ function e($s) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Event Management System</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <style>
     .form-container { 
       display: none !important;
@@ -74,51 +75,6 @@ function e($s) {
         transform: translateY(0);
       }
     }
-    
-    .password-requirements {
-      font-size: 0.875rem;
-      color: var(--gray-600);
-      background: var(--gray-50);
-      border-radius: var(--radius);
-      padding: 1rem;
-      margin-top: 0.5rem;
-    }
-    .password-requirements ul {
-      margin: 0.5rem 0 0 1.5rem;
-      padding: 0;
-    }
-    .password-requirements li {
-      margin: 0.25rem 0;
-    }
-    .password-toggle {
-      position: relative;
-    }
-    .password-toggle input {
-      padding-right: 3rem;
-    }
-    .password-toggle button {
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none !important;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      color: var(--gray-500);
-      width: auto !important;
-      margin: 0;
-      font-size: 1.25rem;
-      box-shadow: none !important;
-    }
-    .password-toggle button:hover {
-      color: var(--gray-700);
-      background: none !important;
-      transform: translateY(-50%) scale(1.1);
-    }
-    .password-toggle button::before {
-      display: none !important;
-    }
   </style>
 </head>
 <body>
@@ -129,15 +85,21 @@ function e($s) {
         <h2>Login</h2>
         
         <?php if ($timeoutMsg): ?>
-          <div class="info-message"><?= e($timeoutMsg) ?></div>
+          <div class="message message-info">
+            <?= e($timeoutMsg) ?>
+          </div>
         <?php endif; ?>
         
         <?php if ($errors['login']): ?>
-          <div class="error-message"><?= e($errors['login']) ?></div>
+          <div class="message message-error">
+            <?= e($errors['login']) ?>
+          </div>
         <?php endif; ?>
         
         <?php if ($errors['success']): ?>
-          <div class="success-message"><?= e($errors['success']) ?></div>
+          <div class="message message-success">
+            <?= e($errors['success']) ?>
+          </div>
         <?php endif; ?>
         
         <?= CSRF::field() ?>
@@ -160,7 +122,9 @@ function e($s) {
             autocomplete="current-password"
             required
           >
-          <button type="button" class="toggle-password" data-target="login-password" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+          <button type="button" class="toggle-password" data-target="login-password" tabindex="-1">
+            <i class="fa-solid fa-eye"></i>
+          </button>
         </div>
         
         <button type="submit" name="login">Login</button>
@@ -182,7 +146,9 @@ function e($s) {
         <h2>Register</h2>
         
         <?php if ($errors['register']): ?>
-          <div class="error-message"><?= e($errors['register']) ?></div>
+          <div class="message message-error">
+            <?= e($errors['register']) ?>
+          </div>
         <?php endif; ?>
         
         <?= CSRF::field() ?>
@@ -215,7 +181,9 @@ function e($s) {
             minlength="8"
             required
           >
-          <button type="button" class="toggle-password" data-target="register-password" tabindex="-1"><i class="fa-solid fa-eye"></i></button>
+          <button type="button" class="toggle-password" data-target="register-password" tabindex="-1">
+            <i class="fa-solid fa-eye"></i>
+          </button>
         </div>
         
         <div class="password-requirements">
@@ -256,11 +224,11 @@ function e($s) {
       const showLoginLinks = document.querySelectorAll('.show-login');
       const togglePasswordButtons = document.querySelectorAll('.toggle-password');
       
-      
       // Show register form
       showRegisterLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
           e.preventDefault();
+          console.log('Switching to REGISTER form...');
           if (loginContainer && registerContainer) {
             loginContainer.classList.remove('active');
             registerContainer.classList.add('active');
@@ -272,6 +240,7 @@ function e($s) {
       showLoginLinks.forEach(function(link) {
         link.addEventListener('click', function(e) {
           e.preventDefault();
+          console.log('Switching to LOGIN form...');
           if (loginContainer && registerContainer) {
             registerContainer.classList.remove('active');
             loginContainer.classList.add('active');
@@ -285,27 +254,32 @@ function e($s) {
           e.preventDefault();
           const targetId = button.getAttribute('data-target');
           const input = document.getElementById(targetId);
+          const icon = button.querySelector('i');
+          
           if (input) {
             if (input.type === 'password') {
               input.type = 'text';
-              console.log('Password visible for:', targetId);
+              icon.classList.remove('fa-eye');
+              icon.classList.add('fa-eye-slash');
             } else {
               input.type = 'password';
-              console.log('Password hidden for:', targetId);
+              icon.classList.remove('fa-eye-slash');
+              icon.classList.add('fa-eye');
             }
           }
         });
       });
       
-      // Auto-hide success messages
+      // Auto-hide success messages after 5 seconds
       setTimeout(function() {
-        const msg = document.querySelector('.success-message');
-        if (msg) {
-          console.log('Auto-hiding success message');
+        const successMessages = document.querySelectorAll('.message-success');
+        successMessages.forEach(function(msg) {
           msg.style.transition = 'opacity 0.5s';
           msg.style.opacity = '0';
-          setTimeout(function() { msg.remove(); }, 500);
-        }
+          setTimeout(function() { 
+            msg.style.display = 'none'; 
+          }, 500);
+        });
       }, 5000);
       
       console.log('=== Page Ready ===');
