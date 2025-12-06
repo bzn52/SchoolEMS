@@ -1,13 +1,9 @@
 <?php
+// events/delete.php - UPDATED: Teachers can only delete their own events
 require_once __DIR__ . '/events_common.php';
 
 Auth::requireLogin();
-$role = Auth::role();
-
-if (!in_array($role, ['teacher', 'admin'])) {
-    http_response_code(403);
-    die("You don't have permission to delete events.");
-}
+Auth::requireRole(['teacher', 'admin']);
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if (!$id) {
@@ -16,7 +12,7 @@ if (!$id) {
 }
 
 // Fetch event details
-$stmt = $conn->prepare("SELECT image, created_by FROM events WHERE id = ?");
+$stmt = $conn->prepare("SELECT title, image, created_by FROM events WHERE id = ?");
 $stmt->bind_param('i', $id);
 $stmt->execute();
 $res = $stmt->get_result();
@@ -28,12 +24,46 @@ if (!$row) {
     die("Event not found");
 }
 
-// Permission check: teachers can only delete their own events
+// NEW: Permission check - Teachers can only delete their own events
 $userId = Auth::id();
-if ($role === 'teacher' && (int)($row['created_by'] ?? 0) !== $userId) {
-    http_response_code(403);
-    die("You can only delete your own events.");
+$role = Auth::role();
+
+if ($role === 'teacher') {
+    // Check if this teacher created this event
+    if ((int)($row['created_by'] ?? 0) !== $userId) {
+        // NOT the creator - show error page
+        ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>Access Denied</title>
+            <link rel="stylesheet" href="../styles.css">
+        </head>
+        <body>
+            <div class="page-wrapper">
+                <main>
+                    <div class="container container-sm">
+                        <div class="card">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🚫</div>
+                                <h2 class="empty-state-title">Access Denied</h2>
+                                <p class="empty-state-text">You can only delete events that you created.</p>
+                                <a href="../dashboard_teacher.php" class="btn btn-sm" style="margin-top: 1rem; width: auto; display: inline-block;">Go to Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </body>
+        </html>
+        <?php
+        exit;
+    }
 }
+
+// If we reach here, user has permission to delete
+$eventTitle = $row['title'];
 
 // Delete from database
 $stmt = $conn->prepare("DELETE FROM events WHERE id = ?");
@@ -49,6 +79,9 @@ if ($stmt->execute()) {
     }
     
     $stmt->close();
+    
+    // Set success message
+    $_SESSION['delete_success'] = "Event '{$eventTitle}' has been deleted successfully.";
     
     // Redirect based on role
     if ($role === 'admin') {

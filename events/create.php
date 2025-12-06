@@ -101,6 +101,7 @@ $backLink = ($role === "admin") ? "../dashboard_admin.php" : "../dashboard_teach
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Create Event</title>
   <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <div class="page-wrapper">
@@ -188,7 +189,7 @@ $backLink = ($role === "admin") ? "../dashboard_admin.php" : "../dashboard_teach
               </div>
               
               <p class="text-muted text-sm text-center">
-                ℹ️ Your event will be pending until approved by an administrator.
+                <i class="fas fa-info-circle"></i> Your event will be pending until approved by an administrator.
               </p>
             </form>
           </div>

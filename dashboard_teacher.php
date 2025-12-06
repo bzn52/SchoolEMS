@@ -1,4 +1,5 @@
 <?php
+// dashboard_teacher.php - UPDATED: Shows edit/delete only for own events
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 if (!defined('APP_INIT')) {
@@ -14,6 +15,10 @@ function e($s) { return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8
 
 $userId = Auth::id();
 $role = Auth::role();
+
+// Check success message
+$successMessage = $_SESSION['delete_success'] ?? '';
+unset($_SESSION['delete_success']);
 
 // Check if created_by column exists
 $created_by_exists = false;
@@ -66,7 +71,6 @@ if ($created_by_exists) {
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Teacher Dashboard</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     .stats-grid {
       display: grid;
@@ -75,7 +79,7 @@ if ($created_by_exists) {
       margin-bottom: 2rem;
     }
     .stat-card {
-      background: var(--white);
+      background: var(--bg-primary);
       padding: 1.25rem;
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
@@ -92,12 +96,12 @@ if ($created_by_exists) {
     .stat-number {
       font-size: 2rem;
       font-weight: 700;
-      color: var(--gray-900);
+      color: var(--primary);
       line-height: 1;
       margin-bottom: 0.5rem;
     }
     .stat-label {
-      color: var(--gray-600);
+      color: var(--text-muted);
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -106,9 +110,8 @@ if ($created_by_exists) {
     .section-title {
       font-size: 1.5rem;
       font-weight: 700;
-      color: var(--white);
+      color: var(--primary);
       margin: 2rem 0 1rem 0;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
     .event-grid {
       display: grid;
@@ -118,8 +121,8 @@ if ($created_by_exists) {
     .owner-badge {
       display: inline-block;
       padding: 0.25rem 0.5rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
+      background: var(--primary);
+      color: var(--bg-primary);
       border-radius: 999px;
       font-size: 0.7rem;
       font-weight: 700;
@@ -132,7 +135,7 @@ if ($created_by_exists) {
     <header>
       <div class="header-content">
         <div class="header-left">
-          <h1><i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard</h1>
+          <h1>👨‍🏫 Teacher Dashboard</h1>
         </div>
         <div class="header-right">
           <div class="user-info">
@@ -161,6 +164,12 @@ if ($created_by_exists) {
           <p class="page-subtitle">View events and manage your creations</p>
         </div>
 
+        <?php if ($successMessage): ?>
+          <div class="message message-success">
+            <?= e($successMessage) ?>
+          </div>
+        <?php endif; ?>
+
         <?php if ($created_by_exists && $stats['total'] > 0): ?>
         <!-- My Statistics -->
         <div class="stats-grid">
@@ -185,7 +194,7 @@ if ($created_by_exists) {
 
         <!-- My Recent Events -->
         <?php if ($myEvents && $myEvents->num_rows > 0): ?>
-        <h3 class="section-title"><i class="fas fa-clipboard-list"></i> My Recent Events</h3>
+        <h3 class="section-title">📝 My Recent Events</h3>
         <div class="event-grid">
           <?php while ($row = $myEvents->fetch_assoc()): ?>
             <article class="card">
@@ -218,7 +227,7 @@ if ($created_by_exists) {
         <?php endif; ?>
 
         <!-- All Approved Events -->
-        <h3 class="section-title"><i class="fas fa-calendar-check"></i> All Upcoming Events</h3>
+        <h3 class="section-title">🎉 All Upcoming Events</h3>
         <?php if (!$allEvents || $allEvents->num_rows === 0): ?>
           <div class="card">
             <div class="empty-state">
@@ -230,7 +239,9 @@ if ($created_by_exists) {
           </div>
         <?php else: ?>
           <div class="event-grid">
-            <?php while ($row = $allEvents->fetch_assoc()): ?>
+            <?php while ($row = $allEvents->fetch_assoc()): 
+              $isOwner = $created_by_exists && (int)$row['created_by'] === $userId;
+            ?>
               <article class="card">
                 <?php if (!empty($row['image'])): ?>
                   <img src="uploads/<?= e($row['image']) ?>" alt="<?= e($row['title']) ?>" class="card-image" style="margin: -2rem -2rem 1rem -2rem; border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
@@ -239,7 +250,7 @@ if ($created_by_exists) {
                 <div class="card-header" style="border-bottom: none; padding-bottom: 0.5rem;">
                   <h3 class="card-title">
                     <?= e($row['title']) ?>
-                    <?php if ($created_by_exists && (int)$row['created_by'] === $userId): ?>
+                    <?php if ($isOwner): ?>
                       <span class="owner-badge">👤 Mine</span>
                     <?php endif; ?>
                   </h3>
@@ -258,8 +269,10 @@ if ($created_by_exists) {
                 
                 <div class="card-footer">
                   <a href="events/view.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm" style="width: 100%;">View Details →</a>
-                  <?php if ($created_by_exists && (int)$row['created_by'] === $userId): ?>
+                  <?php if ($isOwner): ?>
+                    <!-- Only show edit/delete for own events -->
                     <a href="events/edit.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-outline">✏️ Edit</a>
+                    <a href="events/delete.php?id=<?= (int)$row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this event?')">🗑️ Delete</a>
                   <?php endif; ?>
                 </div>
               </article>

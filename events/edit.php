@@ -1,4 +1,5 @@
 <?php
+// events/edit.php - UPDATED: Teachers can only edit their own events
 if (session_status() === PHP_SESSION_NONE) session_start();
 
 require_once __DIR__ . '/events_common.php';
@@ -24,19 +25,50 @@ if (!$event) {
     die('Event not found.');
 }
 
-// Permission check: teacher can only edit own events
+// NEW: Permission check - Teachers can only edit their own events
 $userId = Auth::id();
 $role = Auth::role();
-if ($role === 'teacher' && (int)($event['created_by'] ?? 0) !== $userId) {
-    http_response_code(403);
-    die('You can only edit your own events.');
+
+if ($role === 'teacher') {
+    // Check if this teacher created this event
+    if ((int)($event['created_by'] ?? 0) !== $userId) {
+        // NOT the creator - show error page
+        ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <title>Access Denied</title>
+            <link rel="stylesheet" href="../styles.css">
+        </head>
+        <body>
+            <div class="page-wrapper">
+                <main>
+                    <div class="container container-sm">
+                        <div class="card">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🚫</div>
+                                <h2 class="empty-state-title">Access Denied</h2>
+                                <p class="empty-state-text">You can only edit events that you created.</p>
+                                <a href="../dashboard_teacher.php" class="btn btn-sm" style="margin-top: 1rem; width: auto; display: inline-block;">Go to Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </body>
+        </html>
+        <?php
+        exit;
+    }
 }
 
+// If we reach here, user has permission to edit
 $title = $event['title'];
 $description = $event['description'];
 $currentImage = $event['image'] ?? '';
 $status = $event['status'] ?? 'pending';
-$showStatus = ($role === 'admin');
+$showStatus = ($role === 'admin'); // Only admin can change status
 
 $uploadsDir = EVENTS_UPLOADS_DIR;
 $errors = [];
@@ -95,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
                 
                 // Notify if status changed
-                if ($oldStatus !== $newStatus) {
+                if ($oldStatus !== $newStatus && file_exists(__DIR__ . '/../notifications.php')) {
                     require_once __DIR__ . '/../notifications.php';
                     Notification::notifyEventStatusChange($eventId, $oldStatus, $newStatus);
                 }
@@ -109,6 +141,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
+function e($s) { return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8'); }
 ?>
 <!doctype html>
 <html lang="en">
@@ -199,12 +233,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
               <?php if ($showStatus): ?>
                 <div class="form-group">
-                  <label class="form-label">Status</label>
+                  <label class="form-label">Status (Admin Only)</label>
                   <select name="status" required>
                     <option value="pending" <?= $status==='pending' ? 'selected':'' ?>>Pending</option>
                     <option value="approved" <?= $status==='approved' ? 'selected':'' ?>>Approved</option>
                     <option value="rejected" <?= $status==='rejected' ? 'selected':'' ?>>Rejected</option>
                   </select>
+                </div>
+              <?php else: ?>
+                <div class="message message-info">
+                  ℹ️ Current status: <strong><?= e(ucfirst($status)) ?></strong> (only admins can change status)
                 </div>
               <?php endif; ?>
 
